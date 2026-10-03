@@ -17,8 +17,8 @@
   googleButton.addEventListener("click", async () => {
     const { error } = await authSupabase.auth.signInWithOAuth({
       provider: "google",
-      options: {
-        redirectTo: "http://127.0.0.1:5500/index.html",
+    options: {
+      redirectTo: "https://hng15-shop-eight.vercel.app",
       },
     });
 
