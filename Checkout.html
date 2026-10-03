@@ -1,0 +1,28 @@
+<!-- checkout.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Checkout | HNG15 Shop</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Checkout</h1>
+
+  <form id="checkout-form">
+    <label for="name">Full Name</label><br>
+    <input type="text" id="name" required><br><br>
+
+    <label for="email">Email</label><br>
+    <input type="email" id="email" required><br><br>
+
+    <label for="address">Delivery Address</label><br>
+    <textarea id="address" required></textarea><br><br>
+
+    <button type="submit">Place Order</button>
+  </form>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="script.js"></script>
+</body>
+</html>
