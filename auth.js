@@ -25,5 +25,11 @@
     if (error) {
       alert("Google sign-in failed: " + error.message);
     }
-  });
+ });
+
+const { data: { session } } = await authSupabase.auth.getSession();
+
+if (session) {
+googleButton.textContent = "Signed in as " + (session.user.user_metadata.full_name || session.user.email);
+}
 })();
