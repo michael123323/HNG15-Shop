@@ -7,12 +7,12 @@
     authSupabasePublishableKey
   );
 
-  const googleButton = document.getElementById("google-sign-in");
+ const googleButton = document.getElementById("google-sign-in");
 
-  if (!googleButton) {
-    console.error("Google sign-in button was not found.");
-    return;
-  }
+if (!googleButton) {
+console.error("Google sign-in button was not found.");
+return;
+}
 
   googleButton.addEventListener("click", async () => {
     const { error } = await authSupabase.auth.signInWithOAuth({
@@ -27,9 +27,13 @@
     }
  });
 
-const { data: { session } } = await authSupabase.auth.getSession();
+const {
+data: { session },
+} = await authSupabase.auth.getSession();
 
 if (session) {
-googleButton.textContent = "Signed in as " + (session.user.user_metadata.full_name || session.user.email);
+googleButton.textContent =
+"Signed in as " +
+(session.user.user_metadata.full_name || session.user.email);
 }
 })();
