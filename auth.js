@@ -7,21 +7,11 @@
     authSupabasePublishableKey
   );
 
-  const SHOP_PAGE = "/Checkout.html";
   const googleButton = document.getElementById("google-sign-in");
 
   authSupabase.auth.onAuthStateChange((event, session) => {
     if (event === "SIGNED_IN" && session) {
       console.log("Logged in as:", session.user.email);
-      if (googleButton && window.location.pathname !== SHOP_PAGE) {
-        window.location.replace(SHOP_PAGE);
-      }
-    }
-  });
-
-  authSupabase.auth.getSession().then(({ data }) => {
-    if (data.session && googleButton && window.location.pathname !== SHOP_PAGE) {
-      window.location.replace(SHOP_PAGE);
     }
   });
 
