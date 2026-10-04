@@ -24,9 +24,3 @@ if (error) {
 
 
 
-if (session) {
-googleButton.textContent =
-"Signed in as " +
-(session.user.user_metadata.full_name || session.user.email);
-}
-})();
