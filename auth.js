@@ -7,23 +7,33 @@
     authSupabasePublishableKey
   );
 
+  const SHOP_PAGE = "/Checkout.html";
   const googleButton = document.getElementById("google-sign-in");
 
-  if (!googleButton) {
-    console.error("Google sign-in button was not found.");
-    return;
-  }
-
-  googleButton.addEventListener("click", async () => {
-    const { error } = await authSupabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: "https://hng15-shop-eight.vercel.app",
-      },
-    });
-
-    if (error) {
-      alert("Google sign-in failed: " + error.message);
+  authSupabase.auth.onAuthStateChange((event, session) => {
+    if (event === "SIGNED_IN" && session) {
+      console.log("Logged in as:", session.user.email);
+      if (googleButton && window.location.pathname !== SHOP_PAGE) {
+        window.location.replace(SHOP_PAGE);
+      }
     }
   });
+
+  authSupabase.auth.getSession().then(({ data }) => {
+    if (data.session && googleButton && window.location.pathname !== SHOP_PAGE) {
+      window.location.replace(SHOP_PAGE);
+    }
+  });
+
+  if (googleButton) {
+    googleButton.addEventListener("click", async () => {
+      const { error } = await authSupabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: window.location.origin + "/",
+        },
+      });
+      if (error) alert("Google sign-in failed: " + error.message);
+    });
+  }
 })();
