@@ -7,6 +7,35 @@ const supabaseClient = supabase.createClient(
 );
 
 const addToCartButton = document.getElementById("add-to-cart");
+if (addToCartButton) { addToCartButton.addEventListener("click", async () => { const { data: { user } } = await supabaseClient.auth.getUser();
+
+JavaScript
+    if (!user) {
+        alert("Please log in first.");
+        return;
+    }
+
+    const { error } = await supabaseClient
+        .from("cart_items")
+        .insert([
+            {
+                user_id: user.id,
+                product_id: "wireless-headphone",
+                product_name: "Wireless Headphone",
+                product_price: 25000,
+                quantity: 1
+            }
+        ]);
+
+    if (error) {
+        console.error(error);
+        alert("Could not add product to cart.");
+        return;
+    }
+
+    alert("Product added to cart!");
+});
+}
 
 if (addToCartButton) {
   addToCartButton.addEventListener("click", () => {

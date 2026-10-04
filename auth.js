@@ -14,22 +14,15 @@ console.error("Google sign-in button was not found.");
 return;
 }
 
-  googleButton.addEventListener("click", async () => {
-    const { error } = await authSupabase.auth.signInWithOAuth({
-      provider: "google",
-    options: {
-      redirectTo: "https://hng15-shop-eight.vercel.app",
-      },
-    });
+ googleButton.addEventListener("click", async () => { const { error } = await authSupabase.auth.signInWithOAuth({ provider: "google", options: { redirectTo: "https://hng15-shop-eight.vercel.app" } });
 
-    if (error) {
-      alert("Google sign-in failed: " + error.message);
-    }
- });
+JavaScript
+if (error) {
+    alert("Google sign-in failed: " + error.message);
+}
+});
 
-const {
-data: { session },
-} = await authSupabase.auth.getSession();
+
 
 if (session) {
 googleButton.textContent =
