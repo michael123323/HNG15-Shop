@@ -5,44 +5,61 @@ const supabaseClient = supabase.createClient(
   supabaseUrl,
   supabaseAnonKey
 );
-
 const addToCartButton = document.getElementById("add-to-cart");
-if (addToCartButton) { addToCartButton.addEventListener("click", async () => { const { data: { user } } = await supabaseClient.auth.getUser();
-
-JavaScript
-    if (!user) {
-        alert("Please log in first.");
-        return;
-    }
-
-    const { error } = await supabaseClient
-        .from("cart_items")
-        .insert([
-            {
-                user_id: user.id,
-                product_id: "wireless-headphone",
-                product_name: "Wireless Headphone",
-                product_price: 25000,
-                quantity: 1
-            }
-        ]);
-
-    if (error) {
-        console.error(error);
-        alert("Could not add product to cart.");
-        return;
-    }
-
-    alert("Product added to cart!");
-});
-}
 
 if (addToCartButton) {
-  addToCartButton.addEventListener("click", () => {
+  addToCartButton.addEventListener("click", async () => {
+    const { data: { user } } = await supabaseClient.auth.getUser();
+
+    if (!user) {
+      alert("Please log in first.");
+      return;
+    }
+
+    const productId = "wireless-headphone";
+
+    // Is this product already in the cart?
+    const { data: existing, error: findError } = await supabaseClient
+      .from("cart_items")
+      .select("id, quantity")
+      .eq("user_id", user.id)
+      .eq("product_id", productId)
+      .maybeSingle();
+
+    if (findError) {
+      console.error(findError);
+      alert("Could not read your cart: " + findError.message);
+      return;
+    }
+
+    let error;
+
+    if (existing) {
+      ({ error } = await supabaseClient
+        .from("cart_items")
+        .update({ quantity: existing.quantity + 1 })
+        .eq("id", existing.id));
+    } else {
+      ({ error } = await supabaseClient
+        .from("cart_items")
+        .insert([{
+          user_id: user.id,
+          product_id: productId,
+          product_name: "Wireless Headphone",
+          price: 25000,
+          quantity: 1
+        }]));
+    }
+
+    if (error) {
+      console.error(error);
+      alert("Could not add product to cart: " + error.message);
+      return;
+    }
+
     alert("Product added to cart!");
   });
 }
-
 const checkoutForm = document.getElementById("checkout-form");
 
 if (checkoutForm) {
